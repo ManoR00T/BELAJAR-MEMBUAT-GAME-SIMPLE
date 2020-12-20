@@ -1,0 +1,417 @@
+<!-- Created by @linggarss_-->
+<!DOCTYPE linggarss_ html>
+<html land = 'en'>
+<head>
+    <meta charset = 'UTF-8'>
+    <title>Snake By : linggarss_</title>
+    <link href="https://fonts.googleapis.com/css?family=Exo:400,800" rel="stylesheet" type="text/css">
+    <style>
+        input {
+            display: none;
+        }
+        body {
+            color: #FFF;
+            font-family: Arial;
+            position: fixed;
+            width:  100%;
+            height: 100%;
+            margin: 0;}
+            
+        .canvas {
+            background: #2D2D2D;
+            width:  100%;
+            height: 100%;}
+            
+        .button {
+            transition: .5s background, 3s opacity;
+            outline: none;
+            background: #FFF;
+            color: #333;
+            font-size: 30px;
+            font-family: Exo;
+            width: 300px;
+            height: 60px;
+            margin-top: 30px;
+            border: none;
+            border-radius: 35px;}
+            .button:hover {
+                background: #C8C8C8;
+        }
+        
+              .confirming-difficulty {
+            transition: .5s background, 3s opacity;
+            outline: none;
+            background: #FFF;
+            color: #333;
+            font-size: 30px;
+            font-family: Exo;
+            width: 300px;
+            height: 60px;
+            margin-top: 30px;
+            border: none;
+            border-radius: 35px;}           
+        
+        .frame {
+            display: table-cell; 
+            text-align: center; 
+            vertical-align: middle;
+        }
+        #start-window {
+            transition: top 1.2s ease-in-out, opacity .4s;
+		    background: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFcVkrJw_bd9Ly-2YV0mhm9I-4jaWLs0owHA&usqp=CAU);
+            display: table;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            left: 0px;
+            z-index: 100;}                                                                       
+                                                                  
+            #start-window-text {
+                opacity: 0;
+                transition: 2s opacity;
+                font-size: 80px;
+                font-family: Exo;
+                color: #00ffff;}
+                
+            #start-button {
+                opacity: 0;
+            }
+        #difficulty-selection-menu {
+            contain: content;
+            transition: left 1s, opacity 1s;
+            position: absolute;
+            display: table;
+            background: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFcVkrJw_bd9Ly-2YV0mhm9I-4jaWLs0owHA&usqp=CAU);
+            width:  100%;
+            height: 100%;
+            top: 0px;
+            left: 0px;
+            z-index: 99;}
+        #difficulty-flex-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;}
+        .difficulty-frame {
+            transition: .5s background;
+            background: #222;
+            font-size : 30px;
+            font-family: Exo;
+            width:  250px;
+            height: 85px;
+            margin-top: 5px;
+            padding-top: 15px;
+            border-radius: 15px;
+            border: 1px solid #333;
+        }
+        #lose-menu {
+            contain: content;
+            transition: top 1.5s, opacity 1s;
+            opacity: 0;
+            display: none;
+            position: absolute;
+            background: rgba(34, 34, 34, 0.4);
+            width:  100%;
+            height: 100%;
+            top: -100%;
+            left: 0px;
+            z-index: 98;
+        }
+    </style>
+    <script>
+        alert('Ayo cobain, gua cape cape ngerjain ginian, usap usap aja layarnya:v')
+        //Menu Start muncul
+        window.onload = function() {
+            setTimeout(function(){
+                document.getElementById('start-window-text').style.opacity = '1'
+                setTimeout(function(){
+                document.getElementById(   'start-button'  ).style.opacity = '1'
+                }, 400)
+            },300);
+        };
+    </script>
+</head>
+<body>
+    <!-- Menu Start -->
+    <div align = 'center' id = 'start-window'>
+        <div class = 'frame'>
+            <div id = 'start-window-text'>Game Ular</div> <br>
+            <h4>Created by : @linggarss_</h4>
+            <button class = 'button' id = 'start-button' onclick = 'closeStartWindow()'>Mulai</button>
+        </div>
+    </div>
+    <!-- Menu pemilihan kesulitan -->
+    <div align = 'center' id = 'difficulty-selection-menu'>
+        <div class = 'frame'>
+            <p style = 'font-family: Exo''font-size: 1000px'>Pilih tingkat kesulitan</p>
+            <div align = 'center' id = 'difficulty-flex-box'>
+                <input name = 'difficulty' type = 'radio' id = 'easy'>
+                <label for  = 'easy' onclick = 'difficultySelectionCheck()'>
+                    <div id = 'easy-label' class  = 'difficulty-frame'>Gampang<br><span style = 'font-size: 20px'>Speed: 160px/s</span></div>
+                </label>
+                <input name = 'difficulty' type = 'radio' id = 'medium'>
+                <label for  = 'medium' onclick = 'difficultySelectionCheck()'>
+                    <div id = 'medium-label' class  = 'difficulty-frame'>Lumayan<br><span style = 'font-size: 20px'>Speed: 320px/s</span></div>
+                </label>
+                <input name = 'difficulty' type = 'radio' id = 'hard'>
+                <label for  = 'hard' onclick = 'difficultySelectionCheck()'>
+                    <div id = 'hard-label' class  = 'difficulty-frame'>Susah<br><span style = 'font-size: 20px'>Speed: 640px/s</span></div>
+                </label>
+                <button class = 'button' id = 'confirming-difficulty' onclick = 'closeDifficultySelectionMenu()'>Gasss Keun</button>
+            </div>
+        </div>
+    </div>
+    <div align = 'center' id = 'lose-menu'>
+        <div class = 'frame'>
+            <p style = 'font-size: 60px'><span id = 'result-score'>...</span></p>
+            <button class = 'button' style = 'opacity: 1' onclick = 'replay()'>Ulang</button><br>
+            <button class = 'button' style = 'opacity: 1' onclick = 'openDifficultySelectionMenu()'>Pilih tingkat kesulitan</button><br>
+        </div>
+    </div>
+    <canvas id = 'snake-game'></canvas>
+    <script>
+        //Menutup jendela mulai
+        function closeStartWindow(){
+            document.getElementById("start-window").style.top = "-100%"
+            document.getElementById("start-window").style.opacity = "0"
+            setTimeout(function(){
+            document.getElementById("start-window").style.display = "none"
+            },1000);
+        }
+        //Menutup menu kesulitan
+        function closeDifficultySelectionMenu(){
+            if (document.getElementById( 'easy' ).checked ||
+                document.getElementById('medium').checked ||
+                document.getElementById( 'hard' ).checked) {
+                startGame()
+                document.getElementById("difficulty-selection-menu").style.opacity = "0"
+                document.getElementById("difficulty-selection-menu").style.left = "-100%"
+                setTimeout(function(){
+                document.getElementById("difficulty-selection-menu").style.display = "none"
+                },1500)
+            }
+            else {alert('Select the difficulty level')}
+        }
+        //Buka menu kesulitan
+        function openDifficultySelectionMenu(){
+            document.getElementById('lose-menu').style.top = '-100%'
+            document.getElementById('lose-menu').style.opacity = '0'
+            setTimeout(function(){
+                document.getElementById('lose-menu').style.display = 'none'
+            },1500)
+            document.getElementById("difficulty-selection-menu").style.display = "table"
+            setTimeout(function(){
+                document.getElementById("difficulty-selection-menu").style.opacity = "1"
+                document.getElementById("difficulty-selection-menu").style.left = "0px"
+            },10)
+        }
+        //Lampu latar dari kesulitan yang dipilih
+        function difficultySelectionCheck(){
+            setTimeout(function(){
+                if (document.getElementById('easy').checked){
+                    document.getElementById( 'easy-label' ).style.background = '#000000'
+                    document.getElementById('medium-label').style.background = '#222'
+                    document.getElementById( 'hard-label' ).style.background = '#222'
+                }
+                if (document.getElementById('medium').checked){
+                    document.getElementById( 'easy-label' ).style.background = '#222'
+                    document.getElementById('medium-label').style.background = '#000000'
+                    document.getElementById( 'hard-label' ).style.background = '#222'
+                }
+                if (document.getElementById('hard').checked){
+                    document.getElementById( 'easy-label' ).style.background = '#222'
+                    document.getElementById('medium-label').style.background = '#222'
+                    document.getElementById( 'hard-label' ).style.background = '#000000'
+                }
+            },10)
+        }
+        //Mulai ulang game
+        function replay(){
+            startGame()
+            document.getElementById('lose-menu').style.top = '-100%'
+            document.getElementById('lose-menu').style.opacity = '0'
+            setTimeout(function(){
+                document.getElementById('lose-menu').style.display = 'none'
+            },1000)
+        }
+        canvas = document.getElementById('snake-game')
+        ctx    = canvas.getContext('2d')
+        //Suara preloading
+        var eatSoundPreload = new Audio()
+        eatSoundPreload.src = 'https://dl.dropbox.com/s/l671avwnn97xvg2/eat.mp3?raw=1'
+        var snakeCollisionPreload = new Audio()
+        snakeCollisionPreload.src = 'https://dl.dropbox.com/s/xhzjc9dm93z377l/snake-collision.mp3?raw=1'
+        function startGame(){
+            w = canvas.width  = canvas.style.width  = window.innerWidth
+            h = canvas.height = canvas.style.height = window.innerHeight
+            var rows    = ~~((w-32)/32)
+            var columns = ~~((h-64)/32)
+            var food
+            var direction
+            //Pengaturan kecepatan tergantung kesulitan
+            if (document.getElementById( 'easy' ).checked) snakeSpeed = 200
+            if (document.getElementById('medium').checked) snakeSpeed = 100
+            if (document.getElementById( 'hard' ).checked) snakeSpeed = 50 
+            var snakeMoveInterval
+            var score = 0
+            //Penbuatan ular
+            var snake = [{
+                x: ~~(rows   /2)*32-15,
+                y: ~~(columns/2)*32-15
+            }]
+            //Membuat kisi
+            ctx.clearRect(0, 0, w, h)
+            ctx.strokeStyle = '#444'
+            for (y = 16;  y < columns*32; y += 32){
+                for (x = 16; x < rows*32; x += 32){
+                    ctx.strokeRect(x, y, 32, 32)
+                }
+            }
+            function spawnNewFood(){
+                //Memeriksa makanan
+                if (food) ctx.clearRect(food.x*32-15, food.y*32-15, 30, 30)
+                food = {
+                    x: ~~(Math.random() * rows    + 1),
+                    y: ~~(Math.random() * columns + 1),
+                }
+                ctx.beginPath();
+                //Warna makanan
+                ctx.fillStyle = '#0000FF'
+                ctx.arc(food.x*32, food.y*32, 15, 0, Math.PI*2)
+                ctx.fill()
+            }
+            spawnNewFood()
+            function snakeMove(){
+                head = snake[0]
+                newHeadX = head.x
+                newHeadY = head.y
+                //Perubahan arah
+
+                if (direction == 'left')  newHeadX = (newHeadX < 30) ?    rows*32-15 : newHeadX-32
+                if (direction == 'up')    newHeadY = (newHeadY < 30) ? columns*32-15 : newHeadY-32
+                if (direction == 'right') newHeadX = (newHeadX >    rows*32-32) ? 17 : newHeadX+32
+                if (direction == 'down')  newHeadY = (newHeadY > columns*32-32) ? 17 : newHeadY+32
+                for (i = 0; i < snake.length; i++){
+                    //Memeriksa penampakan makanan pada ular
+                    if (snake[i].x == food.x*32-15 && snake[i].y == food.y*32-15) spawnNewFood()
+                    //Periksa tumbukan ular dengan dirinya sendiri
+                    if (direction && snake[i].x == newHeadX && snake[i].y == newHeadY) lose()
+                    //Elemen pembersih ular
+                    ctx.clearRect(snake[i].x, snake[i].y, 30, 30);
+                }
+                //Periksa tabrakan dengan makanan
+                if (newHeadX+15 == food.x*32 && newHeadY+15 == food.y*32) {
+                    var eat = new Audio()
+                    eat.src = eatSoundPreload.src
+                      eat.play()
+                    spawnNewFood()
+                    score++
+                    printScore()
+                }
+                else snake.pop()
+                //Menambahkan posisi kepala baru
+                snake.unshift({
+                    x: newHeadX,
+                    y: newHeadY
+                })
+                //Warna Ula
+                for (i = 0; i < snake.length; i++){
+                    ctx.fillStyle = (i == 0) ? '#00ff00' : '#DDD'
+                    ctx.fillRect(snake[i].x, snake[i].y, 30, 30)
+                }
+                lastDirection = direction
+            }
+            snakeMove()
+            snakeMoveInterval = setInterval(snakeMove, snakeSpeed)
+            //Tombol keyboard pengenalan
+            document.addEventListener('keydown',function(e){
+                if (e.keyCode == 37 && direction != 'right' && lastDirection != 'right'){
+                    direction =  'left'
+                }
+                else if (e.keyCode == 38 && direction != 'down' && lastDirection != 'down'){
+                    direction =  'up'
+                }
+                else if (e.keyCode == 39 && direction != 'left' && lastDirection != 'left'){
+                    direction =  'right'
+                }
+                else if (e.keyCode == 40 && direction != 'up' && lastDirection != 'up'){
+                    direction =  'down'
+                }
+            })
+            //Pengakuan gesek
+            document.getElementById('snake-game').addEventListener('touchstart', handleTouchStart)
+            document.getElementById('snake-game').addEventListener('touchmove',   handleTouchMove)
+            function getTouches(event){
+              return event.touches || event.originalEvent.touches
+            }
+            function handleTouchStart(event){
+                var firstTouch = getTouches(event)[0]
+                xDown = firstTouch.clientX
+                yDown = firstTouch.clientY
+            };
+            function handleTouchMove(event){
+                if (! xDown || ! yDown){
+                    return;
+                }
+                var xUp = event.touches[0].clientX
+                var yUp = event.touches[0].clientY
+                var xDifferent = xDown - xUp
+                var yDifferent = yDown - yUp
+                if ( Math.abs( xDifferent ) > Math.abs( yDifferent ) ) {
+                    if ( xDifferent > 0 ) {
+                        if (direction != 'right' && lastDirection != 'right'){
+                            direction =  'left'
+                        } 
+                    } else {
+                        if (direction != 'left' && lastDirection != 'left'){
+                            direction =  'right'
+                        } 
+                    }     
+                } else {
+                    if ( yDifferent > 0 ) {
+                        if (direction != 'down' && lastDirection != 'down'){
+                            direction =  'up'
+                        }
+                    } else { 
+                        if (direction != 'up' && lastDirection != 'up'){
+                            direction =  'down'
+                        }
+                    }     
+                }
+                xDown = null
+                yDown = null
+            }
+            //Jendela hasil muncul
+            function lose(){
+                var snakeCollision = new Audio()
+                snakeCollision.src = snakeCollisionPreload.src
+                snakeCollision.play()
+                document.getElementById('lose-menu').style.display = "table"
+                setTimeout(function(){
+                    document.getElementById('lose-menu').style.opacity = "1"
+                    document.getElementById('lose-menu').style.top = '0px'
+                },20)
+                document.getElementById('result-score').innerHTML = 'Score luh: '+score
+                document.getElementById('snake-game').removeEventListener('touchstart', handleTouchStart)
+                document.getElementById('snake-game').removeEventListener('touchmove',   handleTouchMove)
+                clearInterval(snakeMoveInterval)
+            }
+            //Output dari skor
+            function printScore(){
+                ctx.clearRect(16, h-40, 150, 30);
+                ctx.fillStyle = '#FFF';
+                ctx.font = '30px Arial';
+                ctx.fillText('Score: '+score, 16, h-16);
+            }
+            printScore()
+        }
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html>
+    <head>
+        <title>@linggarss</title>
+    </head>
+    <body>
+    </body>
+</html>
